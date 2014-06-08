@@ -1,16 +1,15 @@
 
+#include <cortex.h>
 
+#include <nanoprof_clock.h>
 
-//----- separate file  nanoprof_clock_cortex.c
-
-// could use dummy clock with just increase index
-
+#define CPU_CLOCK_HZ  (180*1000*1000)
+#define CONFIG_PREEMPT_TIMER_FREQ (1)
 
 uint32_t nanoprof_clock_get_timestamp(void)
 {
   return SysTick->VAL;
 }
-
 
 void nanoprof_clock_init(void)
 {

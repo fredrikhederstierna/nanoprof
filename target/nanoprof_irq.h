@@ -2,10 +2,16 @@
 #define __NANOPROF_IRQ_H__
 
 #include <stdint.h>
+#include <stdbool.h>
 
-#define NANOPROF_IRQ_OFF            __irq_off
-#define NANOPROF_IRQ_RESTORE(flag)  __irq_restore(flag)
-#define NANOPROF_IRQ_IS_ENABLED     __irq_is_enabled
-#define NANOPROF_IRQ_CONTEXT        __irq_context
+#define NANOPROF_IRQ_OFF            nanoprof_irq_off
+#define NANOPROF_IRQ_RESTORE(flags) nanoprof_irq_restore(flags)
+#define NANOPROF_IRQ_IS_ENABLED     nanoprof_irq_is_enabled
+#define NANOPROF_IRQ_CONTEXT        nanoprof_irq_context
+
+uint32_t nanoprof_irq_off(void);
+void     nanoprof_irq_restore(uint32_t flags);
+bool     nanoprof_irq_is_enabled(void);
+bool     nanoprof_irq_context(void);
 
 #endif
