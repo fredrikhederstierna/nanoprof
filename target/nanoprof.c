@@ -60,7 +60,7 @@ This is similar to -finstrument-functions-exclude-file-list, but this option set
 struct nanoprof_trace
 {
   uint32_t meta;       // enter/exit  irq on/off  type  mask
-  uint32_t timestamp;  // often us
+  uint64_t timestamp;  // often us
   uint32_t pc;
   uint32_t lr;
 };
@@ -101,7 +101,7 @@ void __cyg_profile_func_enter(void *this_fn, void *call_site)
     volatile struct nanoprof_trace* head = __trace_next();
 
     // get timestamp
-    uint32_t ct = nanoprof_clock_get_timestamp();
+    uint64_t ct = nanoprof_clock_get_timestamp();
 
     uint32_t meta = TRACE_META_ENTER_BIT;
     if (NANOPROF_IRQ_IS_ENABLED) {
@@ -110,10 +110,10 @@ void __cyg_profile_func_enter(void *this_fn, void *call_site)
     if (NANOPROF_IRQ_CONTEXT) {
       meta |= TRACE_META_IRQ_CONTEXT_BIT;
     }
-    head->meta = meta;
+    head->meta      = meta;
     head->timestamp = ct;
-    head->pc = this_fn;
-    head->lr = call_site;
+    head->pc        = this_fn;
+    head->lr        = call_site;
   }
 }
 
@@ -126,7 +126,7 @@ void __cyg_profile_func_exit(void *this_fn, void *call_site)
     volatile struct nanoprof_trace* head = __trace_next();
 
     // get timestamp
-    uint32_t ct = nanoprof_clock_get_timestamp();
+    uint64_t ct = nanoprof_clock_get_timestamp();
 
     uint32_t meta = TRACE_META_EXIT_BIT;
     if (NANOPROF_IRQ_IS_ENABLED) {
@@ -135,10 +135,10 @@ void __cyg_profile_func_exit(void *this_fn, void *call_site)
     if (NANOPROF_IRQ_CONTEXT) {
       meta |= TRACE_META_IRQ_CONTEXT_BIT;
     }
-    head->meta = meta;
+    head->meta      = meta;
     head->timestamp = ct;
-    head->pc = this_fn;
-    head->lr = call_site;
+    head->pc        = this_fn;
+    head->lr        = call_site;
   }
 }
 
